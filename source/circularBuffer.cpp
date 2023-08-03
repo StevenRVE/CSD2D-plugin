@@ -74,9 +74,16 @@ void CircularBuffer::setBufferSize(uint32_t size)
     allocateBuffer();
 }
 
-void CircularBuffer::setDistanceReadWriteHead(uint32_t distance)
+void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples
 {
-
+    if (distanceInSamples >= bufferSize)
+    {
+        distanceReadWriteHead = bufferSize - 1;
+    }
+    else
+    {
+        distanceReadWriteHead = distanceInSamples;
+    }
 }
 
 uint32_t CircularBuffer::getDistanceReadWriteHead() const
