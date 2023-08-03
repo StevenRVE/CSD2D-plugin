@@ -45,7 +45,10 @@ void CircularBuffer::incrementWriteHead()
 
 void CircularBuffer::wrapHead(uint32_t& head) const
 {
-
+    if(head >= bufferSize)
+    {
+        head -= bufferSize;
+    }
 }
 
 void CircularBuffer::tick()
