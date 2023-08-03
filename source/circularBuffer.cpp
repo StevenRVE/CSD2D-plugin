@@ -88,5 +88,5 @@ void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples
 
 uint32_t CircularBuffer::getDistanceReadWriteHead() const
 {
-
+    return distanceReadWriteHead;
 }
