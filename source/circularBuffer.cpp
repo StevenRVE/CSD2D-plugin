@@ -69,7 +69,9 @@ float CircularBuffer::read()
 
 void CircularBuffer::setBufferSize(uint32_t size)
 {
-
+    bufferSize = size;
+    releaseBuffer();
+    allocateBuffer();
 }
 
 void CircularBuffer::setDistanceReadWriteHead(uint32_t distance)
