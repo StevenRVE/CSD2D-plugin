@@ -28,3 +28,8 @@ python generateNewPlugin.py
 ```
 
 Enter name and URI in terminal
+
+### Bibliography:
+- Hack Audio: An Introduction to Computer Programming and Digital Signal Processing in MATLAB, by Eric Tarr
+- Designing Audio Effect Plugins in C++, by Will Pirkle
+- musicdsp.org
