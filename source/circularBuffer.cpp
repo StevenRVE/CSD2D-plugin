@@ -20,12 +20,15 @@ CircularBuffer::~CircularBuffer()
 
 void CircularBuffer::allocateBuffer()
 {
-
+    std::cout << "Allocating buffer..." << "\n";
+    buffer = new float[bufferSize]();
+    std::fill_n(buffer, bufferSize, 0.0f);
 }
 
 void CircularBuffer::releaseBuffer()
 {
-
+    std::cout << "Releasing buffer...\n";
+    delete[] buffer;
 }
 
 void CircularBuffer::incrementReadHead()
