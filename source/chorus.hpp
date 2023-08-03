@@ -5,10 +5,12 @@
 #include "DistrhoPlugin.hpp"
 
 // classes
+#include "circularBuffer.hpp"
 
 // libs
 #include <cstdint>
 #include <iostream>
+
 
 // constants
 #define EXAMPLE         1
@@ -127,7 +129,7 @@ private:
     // variables
 
     // objects
-
+    CircularBuffer delayLine;
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
     */

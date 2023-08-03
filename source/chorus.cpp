@@ -7,7 +7,8 @@ START_NAMESPACE_DISTRHO
       You must set all parameter values to their defaults, matching the value in initParameter().
     */
 Chorus::Chorus()
-    : Plugin(PARAM_COUNT, 0, 0) // parameters, programs, states
+    : Plugin(PARAM_COUNT, 0, 0), // parameters, programs, states
+    delayLine(getSampleRate(), 2)
 {
     /**
       Initialize all our parameters to their defaults.
@@ -39,12 +40,12 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
 
     const auto setParamProps = [](auto& param, ParamProps props)
     {
-        if(props.automatable){ param.hints = kParameterIsAutomatable;}
-        if(props.boolean){param.hints = kParameterIsBoolean;}
-        if(props.integer){param.hints = kParameterIsInteger;}
-        if(props.logarithmic){param.hints = kParameterIsLogarithmic;}
-        if(props.output){param.hints = kParameterIsOutput;}
-        if(props.trigger){param.hints = kParameterIsTrigger | kParameterIsBoolean;}
+        if(props.automatable){ param.hints |= kParameterIsAutomatable;}
+        if(props.boolean){param.hints |= kParameterIsBoolean;}
+        if(props.integer){param.hints |= kParameterIsInteger;}
+        if(props.logarithmic){param.hints |= kParameterIsLogarithmic;}
+        if(props.output){param.hints |= kParameterIsOutput;}
+        if(props.trigger){param.hints |= kParameterIsTrigger | kParameterIsBoolean;}
         param.ranges.min = props.min;
         param.ranges.max = props.max;
         param.ranges.def = props.def;
