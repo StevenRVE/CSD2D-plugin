@@ -4,7 +4,7 @@
 
 #include "circularBuffer.hpp"
 
-CircularBuffer::CircularBuffer(double sampleRate, uint32_t size)
+CircularBuffer::CircularBuffer(double sampleRate, uint32_t size) :
 sampleRate(sampleRate),
 bufferSize(sampleRate * size)
 {
@@ -34,13 +34,13 @@ void CircularBuffer::releaseBuffer()
 void CircularBuffer::incrementReadHead()
 {
     writeHead++;
-    wrap(writeHead);
+    wrapHead(writeHead);
 }
 
 void CircularBuffer::incrementWriteHead()
 {
     readHead++;
-    wrap(writeHead);
+    wrapHead(writeHead);
 }
 
 void CircularBuffer::wrapHead(uint32_t& head) const
@@ -74,7 +74,7 @@ void CircularBuffer::setBufferSize(uint32_t size)
     allocateBuffer();
 }
 
-void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples
+void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples)
 {
     if (distanceInSamples >= bufferSize)
     {
