@@ -45,7 +45,8 @@ void CircularBuffer::wrapHead(uint32_t& head) const
 
 void CircularBuffer::tick()
 {
-
+    incrementWriteHead();
+    incrementReadHead();
 }
 
 void CircularBuffer::write(float value)
