@@ -18,11 +18,11 @@ public:
 
     void releaseBuffer();
 
-    incrementReadHead();
+    void incrementReadHead();
 
-    incrementWriteHead();
+    void incrementWriteHead();
 
-    wrapHead(uint32_t& head) const;
+    void wrapHead(uint32_t& head) const;
 
     void tick();
 
