@@ -33,12 +33,14 @@ void CircularBuffer::releaseBuffer()
 
 void CircularBuffer::incrementReadHead()
 {
-
+    writeHead++;
+    wrap(writeHead);
 }
 
 void CircularBuffer::incrementWriteHead()
 {
-
+    readHead++;
+    wrap(writeHead);
 }
 
 void CircularBuffer::wrapHead(uint32_t& head) const
