@@ -59,20 +59,12 @@ void CircularBuffer::tick()
 
 void CircularBuffer::write(float value)
 {
-    writeHead++;
-    if(writeHead >= bufferSize)
-    {
-        writeHead = 0;
-    }
+    buffer[writeHead] = value;
 }
 
 float CircularBuffer::read()
 {
-    readHead++;
-    if(readHead >= bufferSize)
-    {
-        readHead = 0;
-    }
+    return buffer[readHead];
 }
 
 void CircularBuffer::setBufferSize(uint32_t size)
