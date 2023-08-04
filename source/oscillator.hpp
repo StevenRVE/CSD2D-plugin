@@ -30,9 +30,8 @@ public:
 
     void setSampleRate(double sampleRate);
     void setFrequency(float frequency);
-    void setPhase(float phase);
     void setWaveform(Waveform waveform);
-    void setAmplitude(float amplitude);
+    void setAmplitude(float value);
 
     // methods
 
@@ -42,16 +41,12 @@ public:
 private:
     double sampleRate = 44100.0;
     float frequency{500.0f};
-    float phase{0.0f};
     Waveform waveform{SINE};
     float amplitude{1.0f};
     float sample{0.0f};
+    float phase{0.0f};
 
     void calculateNextSineSample();
-    void calculateNextTriangleSample();
-    void calculateNextSawtoothSample();
-    void calculateNextSquareSample();
-    void calculateNextInverseSawtoothSample();
 };
 
 #endif //SVE_CHORUS_OSCILLATOR_HPP

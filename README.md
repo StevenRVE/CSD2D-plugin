@@ -1,4 +1,4 @@
-# sve-chorus
+# SvE-Chorus
 This repository contains a template plugin for building plugins using the DPF framework.
 Template plugin is build using the example plugins from DPF made by FalkTX.
 
@@ -29,6 +29,8 @@ python generateNewPlugin.py
 ```
 
 Enter name and URI in terminal
+
+<!-- TODO: Update this section with instructions for Marc/Ciska how to build and test plugin -->
 
 ### Bibliography:
 - Hack Audio: An Introduction to Computer Programming and Digital Signal Processing in MATLAB, by Eric Tarr

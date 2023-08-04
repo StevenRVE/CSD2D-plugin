@@ -60,7 +60,7 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=2.0f, .def=1.0f, .name="Gain", .symbol="gain" });
             break;
         case PARAM_RATE:
-            setParamProps(parameter, { .automatable=true, .min=1.0f, .max=1000.0f, .def=500.0f, .name="Rate", .symbol="rate" });
+            setParamProps(parameter, { .automatable=true,  .min=0.1f, .max=1.0f, .def=0.5f, .name="Rate", .symbol="rate" });
             lfo.setFrequency(rate);
             break;
         case PARAM_DEPTH:
@@ -154,9 +154,9 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine.write(input[currentFrame]);
 
         // process
-        delayLine.setDistanceReadWriteHead(lfo.getSample() * depth + 1.0f + preDelay +10.0f);
+        delayLine.setDistanceReadWriteHead(lfo.getSample() + 1.0f);
 
-        output[currentFrame] = 0.1f * (input[currentFrame] * (1 - gain) + lfo.getSample() * gain);
+        output[currentFrame] = 0.5f * (input[currentFrame] * (1 - gain) + delayLine.read() * gain);
 
         lfo.tick();
         delayLine.tick();

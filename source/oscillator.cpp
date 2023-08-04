@@ -26,35 +26,19 @@ void Oscillator::setFrequency(float frequency)
     this->frequency = frequency;
 }
 
-void Oscillator::setPhase(float phase)
-{
-    this->phase = phase;
-}
-
 void Oscillator::setWaveform(Waveform waveform)
 {
     this->waveform = waveform;
 }
 
-void Oscillator::setAmplitude(float amplitude)
+void Oscillator::setAmplitude(float value)
 {
-    this->amplitude = amplitude;
+    this->amplitude = value;
 }
 
 void Oscillator::tick()
 {
-    switch (waveform) {
-        case SINE:
-            calculateNextSineSample();
-        case TRIANGLE:
-            calculateNextTriangleSample();
-        case SAWTOOTH:
-            calculateNextSawtoothSample();
-        case SQUARE:
-            calculateNextSquareSample();
-        case INVERSE_SAWTOOTH:
-            calculateNextInverseSawtoothSample();
-    }
+    calculateNextSineSample();
 }
 
 float Oscillator::getSample()
@@ -64,66 +48,12 @@ float Oscillator::getSample()
 
 void Oscillator::calculateNextSineSample()
 {
-    static const double phaseIncrement = TWOPI * frequency / 44100.0;
-
-    double value = sin(phase);
-    phase += phaseIncrement;
+    double value = amplitude * sin(phase);
+    phase += TWOPI * frequency / sampleRate;
 
     if (phase > TWOPI) {
         phase -= TWOPI;
     }
 
-    sample = value;
-}
-
-// TODO: implement amplitude variable in other waveforms
-// TODO: improve formulas for other waveforms
-void Oscillator::calculateNextTriangleSample()
-{
-    double value = 0.0;
-    if (phase < M_PI) {
-        value = -1.0 + 2.0 * phase / M_PI;
-    } else {
-        value = 3.0 - 2.0 * phase / M_PI;
-    }
-    phase += TWOPI * frequency / 44100.0;
-    if (phase > TWOPI) {
-        phase -= TWOPI;
-    }
-    sample = value;
-}
-
-void Oscillator::calculateNextSawtoothSample()
-{
-    double value = -1.0 + 2.0 * phase / (TWOPI);
-    phase += TWOPI * frequency / 44100.0;
-    if (phase > TWOPI) {
-        phase -= TWOPI;
-    }
-    sample = value;
-}
-
-void Oscillator::calculateNextSquareSample()
-{
-    double value = 0.0;
-    if (phase < M_PI) {
-        value = 1.0;
-    } else {
-        value = -1.0;
-    }
-    phase += TWOPI * frequency / 44100.0;
-    if (phase > TWOPI) {
-        phase -= TWOPI;
-    }
-    sample = value;
-}
-
-void Oscillator::calculateNextInverseSawtoothSample()
-{
-    double value = 1.0 - 2.0 * phase / (TWOPI);
-    phase += TWOPI * frequency / 44100.0;
-    if (phase > TWOPI) {
-        phase -= TWOPI;
-    }
     sample = value;
 }
