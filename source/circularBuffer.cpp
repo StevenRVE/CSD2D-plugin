@@ -81,14 +81,14 @@ void CircularBuffer::setBufferSize(uint32_t size)
     allocateBuffer();
 }
 
-void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples)
+void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInMilliseconds)
 {
-    if (distanceInSamples >= bufferSize)
+    if (distanceInMilliseconds >= bufferSize)
     {
         distanceReadWriteHead = bufferSize - 1;
     }
 
-    distanceReadWriteHead = distanceInSamples * (sampleRate / 1000);
+    distanceReadWriteHead = distanceInMilliseconds * (sampleRate / 1000); // convert milliseconds to samples
     std::cout << "distanceReadWriteHead: " << distanceReadWriteHead << "\n";
     readHead = writeHead - distanceReadWriteHead + bufferSize;
     wrapHead(readHead);
