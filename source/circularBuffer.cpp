@@ -68,6 +68,12 @@ float CircularBuffer::read()
     return buffer[readHead];
 }
 
+void CircularBuffer::setSampleRate(double sampleRate)
+{
+    this->sampleRate = sampleRate;
+    setDistanceReadWriteHead(distanceReadWriteHead);
+}
+
 void CircularBuffer::setBufferSize(uint32_t size)
 {
     bufferSize = size;

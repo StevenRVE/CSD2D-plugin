@@ -33,9 +33,11 @@ public:
 
     // setters and getters
 
+    void setSampleRate(double sampleRate);
+
     void setBufferSize(uint32_t size);
 
-    void setDistanceReadWriteHead(uint32_t distance);
+    void setDistanceReadWriteHead(uint32_t distanceInMilliseconds);
 
     uint32_t getDistanceReadWriteHead() const;
 
