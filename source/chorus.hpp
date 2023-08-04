@@ -25,6 +25,8 @@ class Chorus : public Plugin
 public:
     enum Parameters {
         PARAM_GAIN,
+        PARAM_RATE,
+        PARAM_DEPTH,
         PARAM_COUNT
     };
 
@@ -72,7 +74,7 @@ protected:
       This value is used by LADSPA, DSSI and VST plugin formats.
       @see d_cconst()
     */
-    int64_t getUniqueId() const noexcept override { return d_cconst('S', 'v', 'E', 'T'); }
+    int64_t getUniqueId() const noexcept override { return d_cconst('S', 'v', 'E', 'C'); }
 
     // -------------------------------------------------------------------
     // Init
@@ -112,9 +114,9 @@ protected:
     void deactivate() override;
 
     /**
-      Run/process function for plugins with MIDI input.
+      Run/process function for plugins with Audio input.
     */
-    void run(const float**, float**, uint32_t nframes) override;
+    void run(const float** inputs, float** outputs, uint32_t nframes) override;
 
     // -------------------------------------------------------------------
     // callbacks
@@ -127,14 +129,17 @@ protected:
 
 private:
     // variables
+    float gain{1.0f};
+    uint32_t rate{500};
+    float depth{50.0f};
 
     // objects
     CircularBuffer delayLine;
+
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
     */
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Chorus)
-    float gain;
 };
 
 END_NAMESPACE_DISTRHO

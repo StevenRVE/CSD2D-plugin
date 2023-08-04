@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "chorus.hpp"
 
 START_NAMESPACE_DISTRHO
@@ -7,15 +8,14 @@ START_NAMESPACE_DISTRHO
       You must set all parameter values to their defaults, matching the value in initParameter().
     */
 Chorus::Chorus()
-    : Plugin(PARAM_COUNT, 0, 0), // parameters, programs, states
-    delayLine(getSampleRate(), 2)
+    : Plugin(PARAM_COUNT, 0, 0),
+    delayLine(getSampleRate(), 1)
 {
     /**
       Initialize all our parameters to their defaults.
       In this example all parameters have 0 as default, so we can simply zero them.
     */
 }
-
 
 // -------------------------------------------------------------------
 // Init
@@ -37,7 +37,6 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
         const char* symbol;
     };
 
-
     const auto setParamProps = [](auto& param, ParamProps props)
     {
         if(props.automatable){ param.hints |= kParameterIsAutomatable;}
@@ -53,21 +52,18 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
         param.symbol = props.symbol;
     };
 
-    const auto createList = []
-    {
-        ParameterEnumerationValue* const list = new ParameterEnumerationValue[2];
-        list[0].label = "Item 0";
-        list[0].value = 0;
-        list[1].label = "Item 1";
-        list[1].value = 1;
-        return list;
-    };
-
     switch (index)
     {
-        // MASTER PARAMS
+        // PARAMS
         case PARAM_GAIN:
-            setParamProps(parameter, { .min=-0.0f, .max=2.0f, .def=1.0f, .name="Gain", .symbol="gain" });
+            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=2.0f, .def=1.0f, .name="Gain", .symbol="gain" });
+            break;
+        case PARAM_RATE:
+            setParamProps(parameter, { .automatable=true, .integer=true, .min=100, .max=1000, .def=500, .name="Rate", .symbol="rate" });
+            delayLine.setDistanceReadWriteHead(rate);
+            break;
+        case PARAM_DEPTH:
+            setParamProps(parameter, { .automatable=true, .min=1.0f, .max=100.0f, .def=50.0f, .name="Depth", .symbol="depth" });
             break;
         default:
             break;
@@ -86,9 +82,13 @@ float Chorus::getParameterValue(uint32_t index) const
 {
     switch (index)
     {
-        // MASTER PARAMS
+        // PARAMS
         case PARAM_GAIN:
             return gain;
+        case PARAM_RATE:
+            return rate;
+        case PARAM_DEPTH:
+            return depth;
         default:
             return 0;
     }
@@ -104,9 +104,16 @@ void Chorus::setParameterValue(uint32_t index, float value)
 {
     switch (index)
     {
-    // MASTER PARAMS
+    // PARAMS
     case PARAM_GAIN:
-        gain = value;
+        this->gain = value;
+        break;
+    case PARAM_RATE:
+        this->rate = (uint32_t)value;
+        delayLine.setDistanceReadWriteHead(rate);
+        break;
+    case PARAM_DEPTH:
+        depth = value;
         break;
     default:
         break;
@@ -131,11 +138,23 @@ void Chorus::deactivate()
 }
 
 /**
-  Run/process function for plugins with MIDI input.
+  Run/process function for plugins with audio input.
 */
-void Chorus::run(const float**, float**, uint32_t nframes)
+void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
 {
+    const float* const input = inputs[0];
+          float* output      = outputs[0];
+
     // run
+    for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
+    {
+        delayLine.write(input[currentFrame]);
+
+        // process
+        output[currentFrame] = input[currentFrame] + delayLine.read();
+
+        delayLine.tick();
+    }
 }
 
 // -------------------------------------------------------------------

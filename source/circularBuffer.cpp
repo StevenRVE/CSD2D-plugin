@@ -33,13 +33,14 @@ void CircularBuffer::releaseBuffer()
 
 void CircularBuffer::incrementReadHead()
 {
-    writeHead++;
-    wrapHead(writeHead);
+    std::cout << "Incrementing..." << "\n";
+    readHead++;
+    wrapHead(readHead);
 }
 
 void CircularBuffer::incrementWriteHead()
 {
-    readHead++;
+    writeHead++;
     wrapHead(writeHead);
 }
 
@@ -80,10 +81,11 @@ void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInSamples)
     {
         distanceReadWriteHead = bufferSize - 1;
     }
-    else
-    {
-        distanceReadWriteHead = distanceInSamples;
-    }
+
+    distanceReadWriteHead = distanceInSamples * (sampleRate / 1000);
+    std::cout << "distanceReadWriteHead: " << distanceReadWriteHead << "\n";
+    readHead = writeHead - distanceReadWriteHead + bufferSize;
+    wrapHead(readHead);
 }
 
 uint32_t CircularBuffer::getDistanceReadWriteHead() const
