@@ -5,4 +5,6 @@
 ### Delete vs Free
 - free() is a C library function that can also be used in C++, while “delete” is a C++ keyword.
 - free() frees memory but doesn’t call Destructor of a class whereas “delete” frees the memory and also calls the Destructor of the class.
-- 
+
+### Dry/Wet for Delay plugin
+y(n) = dry * x(n) + wet * [x(n-D) + fb*y(n-D)] from Will C. Pirkle's Designing Audio Effect Plugins in C++ pg. 214

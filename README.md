@@ -1,5 +1,6 @@
 # sve-chorus
 This repository contains a template plugin for building plugins using the DPF framework.
+Template plugin is build using the example plugins from DPF made by FalkTX.
 
 Clone git repository
 ```
