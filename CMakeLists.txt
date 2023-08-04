@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
    FILES_DSP
        source/chorus.cpp
        source/circularBuffer.cpp
+       source/oscillator.cpp
  )
 
  target_include_directories(sve-chorus

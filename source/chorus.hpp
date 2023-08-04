@@ -6,11 +6,11 @@
 
 // classes
 #include "circularBuffer.hpp"
+#include "oscillator.hpp"
 
 // libs
 #include <cstdint>
 #include <iostream>
-
 
 // constants
 #define EXAMPLE         1
@@ -135,6 +135,7 @@ private:
 
     // objects
     CircularBuffer delayLine;
+    Oscillator lfo;
 
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.

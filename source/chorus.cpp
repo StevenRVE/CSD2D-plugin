@@ -9,7 +9,8 @@ START_NAMESPACE_DISTRHO
     */
 Chorus::Chorus()
     : Plugin(PARAM_COUNT, 0, 0),
-    delayLine(getSampleRate(), 1)
+    delayLine(getSampleRate(), 1),
+    lfo(getSampleRate())
 {
     /**
       Initialize all our parameters to their defaults.
@@ -61,6 +62,7 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
         case PARAM_RATE:
             setParamProps(parameter, { .automatable=true, .integer=true, .min=100, .max=1000, .def=500, .name="Rate", .symbol="rate" });
             delayLine.setDistanceReadWriteHead(rate);
+            lfo.setFrequency(rate);
             break;
         case PARAM_DEPTH:
             setParamProps(parameter, { .automatable=true, .min=1.0f, .max=100.0f, .def=50.0f, .name="Depth", .symbol="depth" });
@@ -106,11 +108,12 @@ void Chorus::setParameterValue(uint32_t index, float value)
     {
     // PARAMS
     case PARAM_GAIN:
-        this->gain = value;
+        gain = value;
         break;
     case PARAM_RATE:
-        this->rate = (uint32_t)value;
-        delayLine.setDistanceReadWriteHead(rate);
+        rate = value;
+        delayLine.setDistanceReadWriteHead(value);
+        lfo.setFrequency(value);
         break;
     case PARAM_DEPTH:
         depth = value;
@@ -151,7 +154,7 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine.write(input[currentFrame]);
 
         // process
-        output[currentFrame] = input[currentFrame] + delayLine.read();
+        output[currentFrame] = input[currentFrame] + delayLine.read() + lfo.getNextSample();
 
         delayLine.tick();
     }
@@ -167,6 +170,9 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
 void Chorus::sampleRateChanged(double newSampleRate)
 {
     (void)newSampleRate;
+    delayLine.setSampleRate(newSampleRate);
+    lfo.setSampleRate(newSampleRate);
+
 }
 
 // -----------------------------------------------------------------------
