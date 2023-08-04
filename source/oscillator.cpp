@@ -4,7 +4,7 @@
 
 #include "oscillator.hpp"
 
-Oscillator::Oscillator(double frequency, Waveform waveform) :
+Oscillator::Oscillator(double sampleRate, float frequency, Waveform waveform) :
 frequency(frequency),
 waveform(waveform)
 {
@@ -16,14 +16,19 @@ Oscillator::~Oscillator()
 
 }
 
-void Oscillator::setPhase(double phase)
+void Oscillator::setSampleRate(double sampleRate)
 {
-    this->phase = phase;
+    this->sampleRate = sampleRate;
 }
 
-void Oscillator::setFrequency(double frequency)
+void Oscillator::setFrequency(float frequency)
 {
     this->frequency = frequency;
+}
+
+void Oscillator::setPhase(float phase)
+{
+    this->phase = phase;
 }
 
 void Oscillator::setWaveform(Waveform waveform)
@@ -31,45 +36,49 @@ void Oscillator::setWaveform(Waveform waveform)
     this->waveform = waveform;
 }
 
-void Oscillator::setSampleRate(double sampleRate)
-{
-    this->sampleRate = sampleRate;
-}
-
-void Oscillator::setAmplitude(double amplitude)
+void Oscillator::setAmplitude(float amplitude)
 {
     this->amplitude = amplitude;
 }
 
-double Oscillator::getNextSample()
+void Oscillator::tick()
 {
     switch (waveform) {
         case SINE:
-            return generateSine();
+            calculateNextSineSample();
         case TRIANGLE:
-            return generateTriangle();
+            calculateNextTriangleSample();
         case SAWTOOTH:
-            return generateSawtooth();
+            calculateNextSawtoothSample();
         case SQUARE:
-            return generateSquare();
+            calculateNextSquareSample();
         case INVERSE_SAWTOOTH:
-            return generateInverseSawtooth();
-        default:
-            return 0.0;
+            calculateNextInverseSawtoothSample();
     }
 }
 
-double Oscillator::generateSine()
+float Oscillator::getSample()
 {
-    double value = sin(phase);
-    phase += 2.0 * M_PI * frequency / 44100.0;
-    if (phase > 2.0 * M_PI) {
-        phase -= 2.0 * M_PI;
-    }
-    return value;
+    return sample;
 }
 
-double Oscillator::generateTriangle()
+void Oscillator::calculateNextSineSample()
+{
+    static const double phaseIncrement = TWOPI * frequency / 44100.0;
+
+    double value = sin(phase);
+    phase += phaseIncrement;
+
+    if (phase > TWOPI) {
+        phase -= TWOPI;
+    }
+
+    sample = value;
+}
+
+// TODO: implement amplitude variable in other waveforms
+// TODO: improve formulas for other waveforms
+void Oscillator::calculateNextTriangleSample()
 {
     double value = 0.0;
     if (phase < M_PI) {
@@ -77,24 +86,24 @@ double Oscillator::generateTriangle()
     } else {
         value = 3.0 - 2.0 * phase / M_PI;
     }
-    phase += 2.0 * M_PI * frequency / 44100.0;
-    if (phase > 2.0 * M_PI) {
-        phase -= 2.0 * M_PI;
+    phase += TWOPI * frequency / 44100.0;
+    if (phase > TWOPI) {
+        phase -= TWOPI;
     }
-    return value;
+    sample = value;
 }
 
-double Oscillator::generateSawtooth()
+void Oscillator::calculateNextSawtoothSample()
 {
-    double value = -1.0 + 2.0 * phase / (2.0 * M_PI);
-    phase += 2.0 * M_PI * frequency / 44100.0;
-    if (phase > 2.0 * M_PI) {
-        phase -= 2.0 * M_PI;
+    double value = -1.0 + 2.0 * phase / (TWOPI);
+    phase += TWOPI * frequency / 44100.0;
+    if (phase > TWOPI) {
+        phase -= TWOPI;
     }
-    return value;
+    sample = value;
 }
 
-double Oscillator::generateSquare()
+void Oscillator::calculateNextSquareSample()
 {
     double value = 0.0;
     if (phase < M_PI) {
@@ -102,19 +111,19 @@ double Oscillator::generateSquare()
     } else {
         value = -1.0;
     }
-    phase += 2.0 * M_PI * frequency / 44100.0;
-    if (phase > 2.0 * M_PI) {
-        phase -= 2.0 * M_PI;
+    phase += TWOPI * frequency / 44100.0;
+    if (phase > TWOPI) {
+        phase -= TWOPI;
     }
-    return value;
+    sample = value;
 }
 
-double Oscillator::generateInverseSawtooth()
+void Oscillator::calculateNextInverseSawtoothSample()
 {
-    double value = 1.0 - 2.0 * phase / (2.0 * M_PI);
-    phase += 2.0 * M_PI * frequency / 44100.0;
-    if (phase > 2.0 * M_PI) {
-        phase -= 2.0 * M_PI;
+    double value = 1.0 - 2.0 * phase / (TWOPI);
+    phase += TWOPI * frequency / 44100.0;
+    if (phase > TWOPI) {
+        phase -= TWOPI;
     }
-    return value;
+    sample = value;
 }

@@ -10,7 +10,7 @@ START_NAMESPACE_DISTRHO
 Chorus::Chorus()
     : Plugin(PARAM_COUNT, 0, 0),
     delayLine(getSampleRate(), 1),
-    lfo(getSampleRate())
+    lfo(getSampleRate(), 500.0f)
 {
     /**
       Initialize all our parameters to their defaults.
@@ -60,12 +60,12 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=2.0f, .def=1.0f, .name="Gain", .symbol="gain" });
             break;
         case PARAM_RATE:
-            setParamProps(parameter, { .automatable=true, .integer=true, .min=100, .max=1000, .def=500, .name="Rate", .symbol="rate" });
-            delayLine.setDistanceReadWriteHead(rate);
+            setParamProps(parameter, { .automatable=true, .min=1.0f, .max=1000.0f, .def=500.0f, .name="Rate", .symbol="rate" });
             lfo.setFrequency(rate);
             break;
         case PARAM_DEPTH:
-            setParamProps(parameter, { .automatable=true, .min=1.0f, .max=100.0f, .def=50.0f, .name="Depth", .symbol="depth" });
+            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Depth", .symbol="depth" });
+            lfo.setAmplitude(depth);
             break;
         default:
             break;
@@ -112,11 +112,11 @@ void Chorus::setParameterValue(uint32_t index, float value)
         break;
     case PARAM_RATE:
         rate = value;
-        delayLine.setDistanceReadWriteHead(value);
-        lfo.setFrequency(value);
+        lfo.setFrequency(rate);
         break;
     case PARAM_DEPTH:
         depth = value;
+        lfo.setAmplitude(depth);
         break;
     default:
         break;
@@ -154,8 +154,11 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine.write(input[currentFrame]);
 
         // process
-        output[currentFrame] = input[currentFrame] + delayLine.read() + lfo.getNextSample();
+        delayLine.setDistanceReadWriteHead(lfo.getSample() * depth + 1.0f + preDelay +10.0f);
 
+        output[currentFrame] = 0.1f * (input[currentFrame] * (1 - gain) + lfo.getSample() * gain);
+
+        lfo.tick();
         delayLine.tick();
     }
 }

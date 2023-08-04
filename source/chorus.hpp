@@ -23,6 +23,7 @@ START_NAMESPACE_DISTRHO
 class Chorus : public Plugin
 {
 public:
+    // TODO: add pre-delay as parameter (in samples)
     enum Parameters {
         PARAM_GAIN,
         PARAM_RATE,
@@ -130,8 +131,9 @@ protected:
 private:
     // variables
     float gain{1.0f};
-    uint32_t rate{500};
-    float depth{50.0f};
+    float rate{500.0f};
+    float depth{1.0f};
+    float preDelay{10.0f};
 
     // objects
     CircularBuffer delayLine;

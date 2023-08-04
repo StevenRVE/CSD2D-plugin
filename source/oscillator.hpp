@@ -7,6 +7,10 @@
 
 #include <cmath>
 
+#define TWOPI 6.283185307179586476925286766559f
+
+// TODO: change implementation to use a lookup table, change implementation to use tick() method
+
 class Oscillator {
 public:
     enum Waveform{
@@ -19,31 +23,35 @@ public:
 
     // constructor and destructor
 
-    Oscillator(double sampleRate, double frequency = 1.0, Waveform waveform = SINE);
+    Oscillator(double sampleRate, float frequency = 1.0, Waveform waveform = SINE);
     ~Oscillator();
 
     // setters and getters
 
     void setSampleRate(double sampleRate);
-    void setFrequency(double frequency);
-    void setPhase(double phase);
+    void setFrequency(float frequency);
+    void setPhase(float phase);
     void setWaveform(Waveform waveform);
-    void setAmplitude(double amplitude);
+    void setAmplitude(float amplitude);
 
-    double getNextSample();
+    // methods
+
+    void tick();
+    float getSample();
 
 private:
-    double sampleRate{44100.0};
-    double frequency{500.0};
-    double phase{0.0};
+    double sampleRate = 44100.0;
+    float frequency{500.0f};
+    float phase{0.0f};
     Waveform waveform{SINE};
-    double amplitude{1.0};
+    float amplitude{1.0f};
+    float sample{0.0f};
 
-    double generateSine();
-    double generateTriangle();
-    double generateSawtooth();
-    double generateSquare();
-    double generateInverseSawtooth();
+    void calculateNextSineSample();
+    void calculateNextTriangleSample();
+    void calculateNextSawtoothSample();
+    void calculateNextSquareSample();
+    void calculateNextInverseSawtoothSample();
 };
 
 #endif //SVE_CHORUS_OSCILLATOR_HPP
