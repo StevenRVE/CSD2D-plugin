@@ -19,7 +19,7 @@
 
 #define DISTRHO_PLUGIN_BRAND "SvE-plugins"
 #define DISTRHO_PLUGIN_NAME "sve-chorus"
-#define DISTRHO_PLUGIN_URI  "https://github.com/StevenRVE/CSD2D-plugin"
+#define DISTRHO_PLUGIN_URI  "https://github.com/StevenRVE/sve-chorus"
 
 #define DISTRHO_PLUGIN_IS_RT_SAFE       1
 #define DISTRHO_PLUGIN_NUM_INPUTS       1
