@@ -11,7 +11,7 @@
 class CircularBuffer {
 public:
     // constructor and destructor
-    CircularBuffer(double sampleRate, uint32_t size);
+    CircularBuffer(double sampleRate, float size);
     ~CircularBuffer();
 
     // methods
@@ -37,9 +37,9 @@ public:
 
     void setSampleRate(double sampleRate);
 
-    void setBufferSize(uint32_t size);
+    void setBufferSize(float size);
 
-    void setDistanceReadWriteHead(uint32_t distanceInMilliseconds);
+    void setDistanceReadWriteHead(float distanceInMilliseconds);
 
     uint32_t getDistanceReadWriteHead() const;
 
@@ -50,9 +50,9 @@ private:
     uint32_t bufferSize;
     uint32_t readHead = 0;
     uint32_t writeHead = 0;
-    uint32_t distanceReadWriteHead = 0;
+    uint32_t distanceReadWriteHead = 1000;
     float previousValue = 0.0f;
-    float aplha = 0.5f;
+    float alpha = 0.5f;
 };
 
 

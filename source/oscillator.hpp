@@ -40,7 +40,7 @@ public:
 
 private:
     double sampleRate = 44100.0;
-    float frequency{500.0f};
+    float frequency{1.0f};
     Waveform waveform{SINE};
     float amplitude{1.0f};
     float sample{0.0f};

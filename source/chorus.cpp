@@ -10,7 +10,7 @@ START_NAMESPACE_DISTRHO
 Chorus::Chorus()
     : Plugin(PARAM_COUNT, 0, 0),
     delayLine(getSampleRate(), 1),
-    lfo(getSampleRate(), 500.0f)
+    lfo(getSampleRate(), 1.0f)
 {
     /**
       Initialize all our parameters to their defaults.
@@ -57,14 +57,14 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
     {
         // PARAMS
         case PARAM_GAIN:
-            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=2.0f, .def=1.0f, .name="Gain", .symbol="gain" });
+            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Gain", .symbol="gain" });
             break;
         case PARAM_RATE:
-            setParamProps(parameter, { .automatable=true,  .min=1.0f, .max=50.0f, .def=5.0f, .name="Rate", .symbol="rate" });
+            setParamProps(parameter, { .automatable=true, .logarithmic=true, .min=0.1f, .max=50.0f, .def=5.0f, .name="Rate", .symbol="rate" });
             lfo.setFrequency(rate);
             break;
         case PARAM_DEPTH:
-            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Depth", .symbol="depth" });
+            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Depth", .symbol="depth" });
             lfo.setAmplitude(depth);
             break;
         default:
@@ -147,6 +147,7 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
 {
     const float* const input = inputs[0];
           float* output      = outputs[0];
+          float* output2     = outputs[1];  // stereo
 
     // run
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
@@ -154,11 +155,14 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine.write(input[currentFrame]);
 
         // process
-        delayLine.setDistanceReadWriteHead(lfo.getSample() + 2.0f);
+        delayLine.setDistanceReadWriteHead(lfo.getSample() + 1.0f);
 
-//        output[currentFrame] = (input[currentFrame] * (1 - gain) + delayLine.readWithInterpolation() * gain);
-//        output[currentFrame] = lfo.getSample() * gain;
-        output[currentFrame] = delayLine.readWithInterpolation() * gain;
+//        output[currentFrame] = (input[currentFrame] * (1 - gain) + input[currentFrame] * (lfo.getSample() + 1.0f * gain);
+//        output[currentFrame] = input[currentFrame] * (lfo.getSample() + 1.0f * 0.5f) + input[currentFrame];
+//        output[currentFrame] = delayLine.readWithInterpolation() * gain;
+        output[currentFrame] = input[currentFrame] * gain;
+        output2[currentFrame] = delayLine.read() * depth;
+//        output2[currentFrame] = input[currentFrame] * gain;
 
         lfo.tick();
         delayLine.tick();

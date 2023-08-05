@@ -34,4 +34,7 @@
 # IDEA files
 cmake-build-debug
 .idea
+
+# test project files
 /carlaTestProject.carxp
+/carlaTestProjectStereo.carxp

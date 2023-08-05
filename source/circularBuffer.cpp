@@ -4,9 +4,10 @@
 
 #include "circularBuffer.hpp"
 
-CircularBuffer::CircularBuffer(double sampleRate, uint32_t size) :
+CircularBuffer::CircularBuffer(double sampleRate, float size) :
 sampleRate(sampleRate),
-bufferSize(sampleRate * size)
+bufferSize(sampleRate * size),
+distanceReadWriteHead(1000)
 {
     std::cout << "CircularBuffer constructor" << "\n";
     allocateBuffer();
@@ -70,7 +71,7 @@ float CircularBuffer::read()
 
 float CircularBuffer::readWithInterpolation() {
 
-    float value = (read() * aplha) + (previousValue * aplha);
+    float value = (read() * alpha) + (previousValue * alpha);
 
     return value;
 }
@@ -81,21 +82,21 @@ void CircularBuffer::setSampleRate(double sampleRate)
     setDistanceReadWriteHead(distanceReadWriteHead);
 }
 
-void CircularBuffer::setBufferSize(uint32_t size)
+void CircularBuffer::setBufferSize(float size)
 {
     bufferSize = size;
     releaseBuffer();
     allocateBuffer();
 }
 
-void CircularBuffer::setDistanceReadWriteHead(uint32_t distanceInMilliseconds)
+void CircularBuffer::setDistanceReadWriteHead(float distanceInMilliseconds)
 {
     if (distanceInMilliseconds >= bufferSize)
     {
         distanceReadWriteHead = bufferSize - 1;
     }
 
-    distanceReadWriteHead = distanceInMilliseconds * (sampleRate / 1000); // convert milliseconds to samples
+    distanceReadWriteHead = floor(distanceInMilliseconds * (sampleRate / 1000)); // convert milliseconds to samples
     std::cout << "distanceReadWriteHead: " << distanceReadWriteHead << "\n";
     readHead = writeHead - distanceReadWriteHead + bufferSize;
     wrapHead(readHead);
