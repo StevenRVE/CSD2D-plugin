@@ -68,6 +68,13 @@ float CircularBuffer::read()
     return buffer[readHead];
 }
 
+float CircularBuffer::readWithInterpolation() {
+
+    float value = (read() * aplha) + (previousValue * aplha);
+
+    return value;
+}
+
 void CircularBuffer::setSampleRate(double sampleRate)
 {
     this->sampleRate = sampleRate;
@@ -98,3 +105,4 @@ uint32_t CircularBuffer::getDistanceReadWriteHead() const
 {
     return distanceReadWriteHead;
 }
+

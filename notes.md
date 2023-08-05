@@ -8,3 +8,9 @@
 
 ### Dry/Wet for Delay plugin
 y(n) = dry * x(n) + wet * [x(n-D) + fb*y(n-D)] from Will C. Pirkle's Designing Audio Effect Plugins in C++ pg. 214
+
+### Interpolation recommendation Jan Janssen
+``` 
+result = (value * alpha) + ( prevvalue * (1-alpha)) 
+``` 
+waarin alpha een beetje je tradeoff is tussen responsiveness en smoothing (tussen de 0 en 1)

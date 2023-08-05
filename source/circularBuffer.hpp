@@ -31,6 +31,8 @@ public:
 
     float read();
 
+    float readWithInterpolation();
+
     // setters and getters
 
     void setSampleRate(double sampleRate);
@@ -49,6 +51,8 @@ private:
     uint32_t readHead = 0;
     uint32_t writeHead = 0;
     uint32_t distanceReadWriteHead = 0;
+    float previousValue = 0.0f;
+    float aplha = 0.5f;
 };
 
 

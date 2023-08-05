@@ -131,7 +131,7 @@ protected:
 private:
     // variables
     float gain{1.0f};
-    float rate{500.0f};
+    float rate{5.0f};
     float depth{1.0f};
     float preDelay{10.0f};
 
