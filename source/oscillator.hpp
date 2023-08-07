@@ -9,7 +9,9 @@
 
 #define TWOPI 6.283185307179586476925286766559f
 
+// Might do these later
 // TODO: change implementation to use a lookup table, change implementation to use tick() method
+// TODO: add more waveforms
 
 class Oscillator {
 public:
@@ -23,7 +25,7 @@ public:
 
     // constructor and destructor
 
-    Oscillator(double sampleRate, float frequency = 1.0, Waveform waveform = SINE);
+    Oscillator(double sampleRate, float frequency, float baseFrequency, float phase, Waveform waveform = SINE);
     ~Oscillator();
 
     // setters and getters
@@ -41,12 +43,14 @@ public:
 private:
     double sampleRate = 44100.0;
     float frequency{1.0f};
+    float baseFrequency{1.0f};
     Waveform waveform{SINE};
     float amplitude{1.0f};
     float sample{0.0f};
     float phase{0.0f};
 
     void calculateNextSineSample();
+
 };
 
 #endif //SVE_CHORUS_OSCILLATOR_HPP

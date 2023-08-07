@@ -4,7 +4,7 @@
 
 #include "oscillator.hpp"
 
-Oscillator::Oscillator(double sampleRate, float frequency, Waveform waveform) :
+Oscillator::Oscillator(double sampleRate, float frequency, float baseFrequency, float phase, Waveform waveform) :
 frequency(frequency),
 waveform(waveform)
 {
@@ -21,9 +21,10 @@ void Oscillator::setSampleRate(double sampleRate)
     this->sampleRate = sampleRate;
 }
 
-void Oscillator::setFrequency(float frequency)
+void Oscillator::setFrequency(float newFrequency)
 {
-    this->frequency = frequency;
+
+    this->frequency = newFrequency * baseFrequency;
 }
 
 void Oscillator::setWaveform(Waveform waveform)
@@ -38,7 +39,13 @@ void Oscillator::setAmplitude(float value)
 
 void Oscillator::tick()
 {
-    calculateNextSineSample();
+    switch (waveform) {
+        case SINE:
+            calculateNextSineSample();
+            break;
+        default:
+            break;
+    }
 }
 
 float Oscillator::getSample()
@@ -57,3 +64,5 @@ void Oscillator::calculateNextSineSample()
 
     sample = value;
 }
+
+
