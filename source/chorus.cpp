@@ -9,9 +9,15 @@ START_NAMESPACE_DISTRHO
     */
 Chorus::Chorus()
     : Plugin(PARAM_COUNT, 0, 0),
-    delayLine(getSampleRate(), 1),
-    lfo(getSampleRate(), 1.0f)
-{
+      delayLine1(getSampleRate(), 0.1),
+      delayLine2(getSampleRate(), 0.1),
+      delayLine3(getSampleRate(), 0.1),
+      delayLine4(getSampleRate(), 0.1),
+      lfo1(getSampleRate(), 0.0f, 0.0f, Oscillator::Waveform::SINE),
+      lfo2(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
+      lfo3(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
+      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE)
+      {
     /**
       Initialize all our parameters to their defaults.
       In this example all parameters have 0 as default, so we can simply zero them.
@@ -112,11 +118,17 @@ void Chorus::setParameterValue(uint32_t index, float value)
         break;
     case PARAM_RATE:
         rate = value;
-        lfo.setFrequency(rate);
+        lfo1.setFrequency(rate);
+        lfo2.setFrequency(rate * 0.5f);
+        lfo3.setFrequency(rate * 0.25f);
+        lfo4.setFrequency(rate * 0.125f);
         break;
     case PARAM_DEPTH:
         depth = value;
-        lfo.setAmplitude(depth);
+        lfo1.setAmplitude(depth );
+        lfo2.setAmplitude(depth * 0.85f );
+        lfo3.setAmplitude(depth * 0.7f );
+        lfo4.setAmplitude(depth * 0.5f );
         break;
     default:
         break;
@@ -152,20 +164,33 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
     // run
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
     {
-        delayLine.write(input[currentFrame]);
+        // write
+        delayLine1.write(input[currentFrame]);
+        delayLine2.write(input[currentFrame]);
+        delayLine3.write(input[currentFrame]);
+        delayLine4.write(input[currentFrame]);
 
         // process
-        delayLine.setDistanceReadWriteHead(lfo.getSample() + 1.0f);
+        delayLine1.setDistanceReadWriteHead(lfo1.getSample() + 1.0f);
+        delayLine2.setDistanceReadWriteHead(lfo2.getSample() + 1.0f);
+        delayLine3.setDistanceReadWriteHead(lfo3.getSample() + 1.0f);
+        delayLine4.setDistanceReadWriteHead(lfo4.getSample() + 1.0f);
 
-//        output[currentFrame] = (input[currentFrame] * (1 - gain) + input[currentFrame] * (lfo.getSample() + 1.0f * gain);
-//        output[currentFrame] = input[currentFrame] * (lfo.getSample() + 1.0f * 0.5f) + input[currentFrame];
-//        output[currentFrame] = delayLine.readWithInterpolation() * gain;
-        output[currentFrame] = input[currentFrame] * gain;
-        output2[currentFrame] = delayLine.read() * depth;
-//        output2[currentFrame] = input[currentFrame] * gain;
+        // output
+        output[currentFrame]  = 0.5f * ((1-gain) * input[currentFrame]
+                              + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * gain);
+        output2[currentFrame] = 0.5f * ((1-gain) * input[currentFrame]
+                              + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * gain);
 
-        lfo.tick();
-        delayLine.tick();
+        // tick
+        lfo1.tick();
+        lfo2.tick();
+        lfo3.tick();
+        lfo4.tick();
+        delayLine1.tick();
+        delayLine2.tick();
+        delayLine3.tick();
+        delayLine4.tick();
     }
 }
 
@@ -179,8 +204,14 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
 void Chorus::sampleRateChanged(double newSampleRate)
 {
     (void)newSampleRate;
-    delayLine.setSampleRate(newSampleRate);
-    lfo.setSampleRate(newSampleRate);
+    delayLine1.setSampleRate(newSampleRate);
+    delayLine2.setSampleRate(newSampleRate);
+    delayLine3.setSampleRate(newSampleRate);
+    delayLine4.setSampleRate(newSampleRate);
+    lfo1.setSampleRate(newSampleRate);
+    lfo2.setSampleRate(newSampleRate);
+    lfo3.setSampleRate(newSampleRate);
+    lfo4.setSampleRate(newSampleRate);
 
 }
 

@@ -136,8 +136,16 @@ private:
     float preDelay{10.0f};
 
     // objects
-    CircularBuffer delayLine;
-    Oscillator lfo;
+    CircularBuffer delayLine1;
+    CircularBuffer delayLine2;
+    CircularBuffer delayLine3;
+    CircularBuffer delayLine4;
+
+    Oscillator lfo1;
+    Oscillator lfo2;
+    Oscillator lfo3;
+    Oscillator lfo4;
+
 
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
