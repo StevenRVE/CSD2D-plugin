@@ -11,6 +11,9 @@ y(n) = dry * x(n) + wet * [x(n-D) + fb*y(n-D)] from Will C. Pirkle's Designing A
 
 ### Interpolation recommendation Jan Janssen
 ``` 
-result = (value * alpha) + ( prevvalue * (1-alpha)) 
-``` 
-waarin alpha een beetje je tradeoff is tussen responsiveness en smoothing (tussen de 0 en 1)
+result = (currentValue * alpha) + ( previousValue * (1-alpha)) 
+```
+Where alpha is a value between 0 and 1. The closer to 1, the more weight the current value has. The closer to 0, the more weight the previous value has.
+
+### Roland Chorus florian-anwander
+https://www.florian-anwander.de/roland_string_choruses/
