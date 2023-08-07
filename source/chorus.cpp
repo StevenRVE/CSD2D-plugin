@@ -66,12 +66,11 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Gain", .symbol="gain" });
             break;
         case PARAM_RATE:
-            setParamProps(parameter, { .automatable=true, .logarithmic=true, .min=0.1f, .max=50.0f, .def=5.0f, .name="Rate", .symbol="rate" });
-            lfo.setFrequency(rate);
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=20.0f, .def=1.0f, .name="Rate", .symbol="rate" });
             break;
         case PARAM_DEPTH:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Depth", .symbol="depth" });
-            lfo.setAmplitude(depth);
+
             break;
         default:
             break;
