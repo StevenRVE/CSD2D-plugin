@@ -12,14 +12,14 @@ public:
     ArctangentDistortion(double sampleRate);
     ~ArctangentDistortion();
     float process(float input);
-    void setGain(float gain);
+    void setPreGain(float preGain);
     void setThreshold(float threshold);
     void setMix(float mix);
     void setSampleRate(double sampleRate);
 
 private:
-    float gain{1.0f};
-    float threshold{0.5f};
+    float preGain{1.0f};
+    float drive{0.5f};
     float mix{0.5f};
     double sampleRate{44100};
 };
