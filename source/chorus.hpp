@@ -68,7 +68,7 @@ protected:
       Get the plugin version, in hexadecimal.
       @see d_version()
     */
-    uint32_t getVersion() const noexcept override { return d_version(0, 0, 0); }
+    uint32_t getVersion() const noexcept override { return d_version(1, 0, 0); }
 
     /**
       Get the plugin unique Id.
@@ -144,7 +144,6 @@ private:
     Oscillator lfo2;
     Oscillator lfo3;
     Oscillator lfo4;
-
 
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
