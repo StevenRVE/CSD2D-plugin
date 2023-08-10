@@ -26,7 +26,7 @@ class Chorus : public Plugin
 public:
     // TODO: add pre-delay as parameter (in samples)
     enum Parameters {
-        PARAM_GAIN,
+        PARAM_DRYWET,
         PARAM_RATE,
         PARAM_DEPTH,
         PARAM_PREGAIN,
@@ -133,7 +133,7 @@ protected:
 
 private:
     // variables
-    float gain{1.0f};
+    float dryWet{1.0f};
     float rate{1.0f};
     float depth{1.0f};
     float preGain{1.0f};
