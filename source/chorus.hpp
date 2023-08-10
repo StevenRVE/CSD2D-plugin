@@ -145,6 +145,7 @@ private:
     Oscillator lfo2;
     Oscillator lfo3;
     Oscillator lfo4;
+    Oscillator testTone;
 
     ArctangentDistortion distortion;
 

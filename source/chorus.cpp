@@ -188,6 +188,7 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         lfo2.tick();
         lfo3.tick();
         lfo4.tick();
+        testTone.tick();
         delayLine1.tick();
         delayLine2.tick();
         delayLine3.tick();
