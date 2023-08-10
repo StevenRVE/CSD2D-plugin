@@ -22,7 +22,7 @@ void ArctangentDistortion::setPreGain(float preGain) {
     this->preGain = preGain;
 }
 
-void ArctangentDistortion::setThreshold(float drive) {
+void ArctangentDistortion::setDrive(float drive) {
     this->drive = drive;
 }
 

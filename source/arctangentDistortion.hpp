@@ -13,7 +13,7 @@ public:
     ~ArctangentDistortion();
     float process(float input);
     void setPreGain(float preGain);
-    void setThreshold(float threshold);
+    void setDrive(float threshold);
     void setMix(float mix);
     void setSampleRate(double sampleRate);
 
