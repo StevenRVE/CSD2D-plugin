@@ -22,7 +22,7 @@ void ArctangentDistortion::setPreGain(float preGain) {
 }
 
 void ArctangentDistortion::setDrive(float newDrive) {
-    float value = (drive * alpha) + (previousDrive * alpha);
+    float value = (newDrive * alpha) + (previousDrive * alpha);
     this->drive = value;
 }
 
