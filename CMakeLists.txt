@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
        source/chorus.cpp
        source/circularBuffer.cpp
        source/oscillator.cpp
+       source/arctangentDistortion.cpp
  )
 
  target_include_directories(sve-chorus

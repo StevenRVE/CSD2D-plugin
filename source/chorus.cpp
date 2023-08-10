@@ -16,7 +16,9 @@ Chorus::Chorus()
       lfo1(getSampleRate(), 0.0f, 0.0f, Oscillator::Waveform::SINE),
       lfo2(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
       lfo3(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
-      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE)
+      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
+      testTone(getSampleRate(), 500.0f, 0.0f, 0.0f, Oscillator::Waveform::SINE),
+      distortion(getSampleRate())
       {
     /**
       Initialize all our parameters to their defaults.
@@ -164,10 +166,10 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
     {
         // write
-        delayLine1.write(input[currentFrame]);
-        delayLine2.write(input[currentFrame]);
-        delayLine3.write(input[currentFrame]);
-        delayLine4.write(input[currentFrame]);
+        delayLine1.write(distortion.process(testTone.getSample()));
+        delayLine2.write(distortion.process(testTone.getSample()));
+        delayLine3.write(distortion.process(testTone.getSample()));
+        delayLine4.write(distortion.process(testTone.getSample()));
 
         // process
         delayLine1.setDistanceReadWriteHead(lfo1.getSample() + 1.0f);
@@ -176,9 +178,9 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine4.setDistanceReadWriteHead(lfo4.getSample() + 1.0f);
 
         // output
-        output[currentFrame]  = 0.5f * ((1-gain) * input[currentFrame]
+        output[currentFrame]  = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
                               + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * gain);
-        output2[currentFrame] = 0.5f * ((1-gain) * input[currentFrame]
+        output2[currentFrame] = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
                               + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * gain);
 
         // tick

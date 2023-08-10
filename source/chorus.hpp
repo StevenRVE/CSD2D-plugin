@@ -7,6 +7,7 @@
 // classes
 #include "circularBuffer.hpp"
 #include "oscillator.hpp"
+#include "arctangentDistortion.hpp"
 
 // libs
 #include <cstdint>
@@ -145,6 +146,7 @@ private:
     Oscillator lfo3;
     Oscillator lfo4;
 
+    ArctangentDistortion distortion;
 
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
