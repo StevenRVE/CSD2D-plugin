@@ -64,8 +64,8 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
     switch (index)
     {
         // PARAMS
-        case PARAM_GAIN:
-            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Gain", .symbol="gain" });
+        case PARAM_DRYWET:
+            setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Dry/Wet", .symbol="drywet" });
             break;
         case PARAM_RATE:
             setParamProps(parameter, { .automatable=true, .min=0.1f, .max=20.0f, .def=1.0f, .name="Rate", .symbol="rate" });
@@ -97,8 +97,8 @@ float Chorus::getParameterValue(uint32_t index) const
     switch (index)
     {
         // PARAMS
-        case PARAM_GAIN:
-            return gain;
+        case PARAM_DRYWET:
+            return dryWet;
         case PARAM_RATE:
             return rate;
         case PARAM_DEPTH:
@@ -123,8 +123,8 @@ void Chorus::setParameterValue(uint32_t index, float value)
     switch (index)
     {
     // PARAMS
-    case PARAM_GAIN:
-        gain = value;
+    case PARAM_DRYWET:
+        dryWet = value;
         break;
     case PARAM_RATE:
         rate = value;
@@ -196,13 +196,10 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine4.setDistanceReadWriteHead(lfo4.getSample() + 1.0f);
 
         // output
-        output[currentFrame]  = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
-                              + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * gain);
-        output2[currentFrame] = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
-                              + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * gain);
-
-//        output[currentFrame] = 0.4f * distortion.process(testTone.getSample());
-//        output2[currentFrame] = 0.4f * distortion.process(testTone.getSample());
+        output[currentFrame]  = 0.5f * ((1-dryWet) * distortion.process(input[currentFrame])
+                              + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * dryWet);
+        output2[currentFrame] = 0.5f * ((1-dryWet) * distortion.process(input[currentFrame])
+                              + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * dryWet);
 
         // tick
         lfo1.tick();
