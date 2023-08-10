@@ -16,7 +16,9 @@ Chorus::Chorus()
       lfo1(getSampleRate(), 0.0f, 0.0f, Oscillator::Waveform::SINE),
       lfo2(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
       lfo3(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
-      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE)
+      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
+      testTone(getSampleRate(), 500.0f, 0.0f, 0.0f, Oscillator::Waveform::SINE),
+      distortion(getSampleRate())
       {
     /**
       Initialize all our parameters to their defaults.
@@ -70,7 +72,9 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             break;
         case PARAM_DEPTH:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Depth", .symbol="depth" });
-
+            break;
+        case PARAM_DRIVE:
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=1.0f, .def=0.5f, .name="Drive", .symbol="drive" });
             break;
         default:
             break;
@@ -96,6 +100,8 @@ float Chorus::getParameterValue(uint32_t index) const
             return rate;
         case PARAM_DEPTH:
             return depth;
+        case PARAM_DRIVE:
+            return drive;
         default:
             return 0;
     }
@@ -128,6 +134,10 @@ void Chorus::setParameterValue(uint32_t index, float value)
         lfo2.setAmplitude(depth * 0.85f );
         lfo3.setAmplitude(depth * 0.7f );
         lfo4.setAmplitude(depth * 0.5f );
+        break;
+    case PARAM_DRIVE:
+        drive = value;
+        distortion.setDrive(drive);
         break;
     default:
         break;
@@ -164,28 +174,33 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
     {
         // write
-        delayLine1.write(input[currentFrame]);
-        delayLine2.write(input[currentFrame]);
-        delayLine3.write(input[currentFrame]);
-        delayLine4.write(input[currentFrame]);
+        delayLine1.write(distortion.process(testTone.getSample()));
+        delayLine2.write(distortion.process(testTone.getSample()));
+        delayLine3.write(distortion.process(testTone.getSample()));
+        delayLine4.write(distortion.process(testTone.getSample()));
 
         // process
+
         delayLine1.setDistanceReadWriteHead(lfo1.getSample() + 1.0f);
         delayLine2.setDistanceReadWriteHead(lfo2.getSample() + 1.0f);
         delayLine3.setDistanceReadWriteHead(lfo3.getSample() + 1.0f);
         delayLine4.setDistanceReadWriteHead(lfo4.getSample() + 1.0f);
 
         // output
-        output[currentFrame]  = 0.5f * ((1-gain) * input[currentFrame]
+        output[currentFrame]  = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
                               + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * gain);
-        output2[currentFrame] = 0.5f * ((1-gain) * input[currentFrame]
+        output2[currentFrame] = 0.5f * ((1-gain) * distortion.process(testTone.getSample())
                               + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * gain);
+
+//        output[currentFrame] = 0.4f * distortion.process(testTone.getSample());
+//        output2[currentFrame] = 0.4f * distortion.process(testTone.getSample());
 
         // tick
         lfo1.tick();
         lfo2.tick();
         lfo3.tick();
         lfo4.tick();
+        testTone.tick();
         delayLine1.tick();
         delayLine2.tick();
         delayLine3.tick();

@@ -7,6 +7,7 @@
 // classes
 #include "circularBuffer.hpp"
 #include "oscillator.hpp"
+#include "arctangentDistortion.hpp"
 
 // libs
 #include <cstdint>
@@ -28,6 +29,7 @@ public:
         PARAM_GAIN,
         PARAM_RATE,
         PARAM_DEPTH,
+        PARAM_DRIVE,
         PARAM_COUNT
     };
 
@@ -133,6 +135,7 @@ private:
     float gain{1.0f};
     float rate{1.0f};
     float depth{1.0f};
+    float drive{0.5f};
 
     // objects
     CircularBuffer delayLine1;
@@ -144,6 +147,9 @@ private:
     Oscillator lfo2;
     Oscillator lfo3;
     Oscillator lfo4;
+    Oscillator testTone;
+
+    ArctangentDistortion distortion;
 
     /**
         Set our plugin class as non-copyable and add a leak detector just in case.
