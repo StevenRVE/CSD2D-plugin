@@ -20,9 +20,8 @@ private:
     float preGain{1.0f};
     float drive{0.5f};
     float previousDrive{0.5f};
-    float alpha{0.5f};
+    float alpha{0.3f};
     double sampleRate{44100};
 };
-
 
 #endif //SVE_CHORUS_ARCTANGENTDISTORTION_HPP
