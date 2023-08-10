@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
  add_subdirectory(dpf)
 
  dpf_add_plugin(sve-chorus
-   TARGETS clap lv2 vst2 vst3
+   TARGETS lv2 vst2 vst3
 
    FILES_DSP
        source/chorus.cpp
@@ -14,8 +14,7 @@ set(CMAKE_CXX_STANDARD 17)
        source/oscillator.cpp
  )
 
- target_include_directories(sve-chorus
-   PUBLIC source)
+ target_include_directories(sve-chorus PUBLIC source)
 
  target_compile_options(sve-chorus PUBLIC "-Wno-c++11-narrowing")
 
