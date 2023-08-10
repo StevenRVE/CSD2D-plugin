@@ -19,7 +19,6 @@ public:
 private:
     float preGain{1.0f};
     float drive{0.5f};
-    float mix{0.5f};
     float previousDrive{0.5f};
     float alpha{0.5f};
     double sampleRate{44100};

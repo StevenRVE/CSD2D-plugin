@@ -26,10 +26,6 @@ void ArctangentDistortion::setDrive(float newDrive) {
     this->drive = value;
 }
 
-void ArctangentDistortion::setMix(float mix) {
-    this->mix = mix;
-}
-
 void ArctangentDistortion::setSampleRate(double sampleRate) {
     this->sampleRate = sampleRate;
 }
