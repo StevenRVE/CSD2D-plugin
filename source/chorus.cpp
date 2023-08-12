@@ -66,6 +66,12 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
     switch (index)
     {
         // PARAMS
+        case PARAM_PREGAIN:
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=2.0f, .def=0.5f, .name="Pre-Gain", .symbol="pregain" });
+            break;
+        case PARAM_DRIVE:
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=10.0f, .def=0.5f, .name="Drive", .symbol="drive" });
+            break;
         case PARAM_DRYWET:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Dry/Wet", .symbol="drywet" });
             break;
@@ -74,12 +80,6 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             break;
         case PARAM_DEPTH:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Depth", .symbol="depth" });
-            break;
-        case PARAM_PREGAIN:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=2.0f, .def=0.5f, .name="Pre-Gain", .symbol="pregain" });
-            break;
-        case PARAM_DRIVE:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=10.0f, .def=0.5f, .name="Drive", .symbol="drive" });
             break;
         default:
             break;
@@ -125,6 +125,14 @@ void Chorus::setParameterValue(uint32_t index, float value)
     switch (index)
     {
     // PARAMS
+    case PARAM_PREGAIN:
+        preGain = value;
+        distortion.setPreGain(preGain);
+        break;
+    case PARAM_DRIVE:
+        drive = value;
+        distortion.setDrive(drive);
+        break;
     case PARAM_DRYWET:
         dryWet = value;
         break;
@@ -137,18 +145,10 @@ void Chorus::setParameterValue(uint32_t index, float value)
         break;
     case PARAM_DEPTH:
         depth = value;
-        lfo1.setAmplitude(depth );
-        lfo2.setAmplitude(depth * 0.85f );
-        lfo3.setAmplitude(depth * 0.7f );
-        lfo4.setAmplitude(depth * 0.5f );
-        break;
-    case PARAM_PREGAIN:
-        preGain = value;
-        distortion.setPreGain(preGain);
-        break;
-    case PARAM_DRIVE:
-        drive = value;
-        distortion.setDrive(drive);
+        lfo1.setAmplitude(depth);
+        lfo2.setAmplitude(depth * 0.85f);
+        lfo3.setAmplitude(depth * 0.7f);
+        lfo4.setAmplitude(depth * 0.5f);
         break;
     default:
         break;

@@ -63,7 +63,6 @@ namespace Art = SvEArtworkChorus;
     knobDepth->setDefault(1.0f);
     knobDepth->setRotationAngle(180);
     knobDepth->setCallback(this);
-
 }
 
 // -----------------------------------------------------------------------
@@ -74,6 +73,12 @@ void ChorusUI::parameterChanged(uint32_t index, float value)
     switch (index)
     {
         // PARAMS
+        case Chorus::PARAM_PREGAIN:
+            knobPreGain->setValue(value);
+            break;
+        case Chorus::PARAM_DRIVE:
+            knobDrive->setValue(value);
+            break;
         case Chorus::PARAM_DRYWET:
             knobDryWet->setValue(value);
             break;
@@ -82,12 +87,6 @@ void ChorusUI::parameterChanged(uint32_t index, float value)
             break;
         case Chorus::PARAM_DEPTH:
             knobDepth->setValue(value);
-            break;
-        case Chorus::PARAM_PREGAIN:
-            knobPreGain->setValue(value);
-            break;
-        case Chorus::PARAM_DRIVE:
-            knobDrive->setValue(value);
             break;
         default:
             break;

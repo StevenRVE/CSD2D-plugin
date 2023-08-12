@@ -33,7 +33,7 @@ protected:
 private:
     Image imgBackpanel;
 
-    ScopedPointer<ImageKnob> knobDryWet, knobRate, knobDepth, knobPreGain, knobDrive;
+    ScopedPointer<ImageKnob> knobPreGain, knobDrive, knobDryWet, knobRate, knobDepth;
 };
 
 END_NAMESPACE_DISTRHO
