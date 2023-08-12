@@ -2,6 +2,11 @@ name: 'DPF CMake builder action'
 description: 'Builds DPF based plugins that use CMake as build system'
 author: 'DISTRHO'
 
+on:
+  push:
+    branches:
+      - main
+
 inputs:
   target:
     description: 'Target OS'
