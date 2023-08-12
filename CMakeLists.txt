@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD 17)
 
    FILES_UI
        source/SvEArtworkChorus.cpp
+       source/chorusUI.cpp
  )
 
  target_include_directories(sve-chorus PUBLIC source)
