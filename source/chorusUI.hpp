@@ -14,19 +14,16 @@
 START_NAMESPACE_DISTRHO
 
 class ChorusUI : public UI,
-                 public ImageKnob::Callback,
-                 public ImageButton::Callback
+                 public ImageKnob::Callback
 {
 public:
     ChorusUI();
-    ~ChorusUI();
 
 protected:
     // DSP Callbacks
     void parameterChanged(uint32_t index, float value) override;
 
     // Widget Callbacks
-    void imageButtonClicked(ImageButton* button, int buttonId) override;
     void imageKnobDragStarted(ImageKnob* knob) override;
     void imageKnobDragFinished(ImageKnob* knob) override;
     void imageKnobValueChanged(ImageKnob* knob, float value) override;
@@ -36,7 +33,7 @@ protected:
 private:
     Image imgBackpanel;
 
-    ScopedPointer<ImageKnob> knobMix, knobRate, knobDepth, knobPreGain, knobDrive;
+    ScopedPointer<ImageKnob> knobDryWet, knobRate, knobDepth, knobPreGain, knobDrive;
 };
 
 END_NAMESPACE_DISTRHO
