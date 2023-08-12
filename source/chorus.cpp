@@ -44,6 +44,7 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
         float min, max, def;
         const char* name;
         const char* symbol;
+        const char* unit;
     };
 
     const auto setParamProps = [](auto& param, ParamProps props)
@@ -59,6 +60,7 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
         param.ranges.def = props.def;
         param.name = props.name;
         param.symbol = props.symbol;
+        param.unit = props.unit;
     };
 
     switch (index)
