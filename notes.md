@@ -17,3 +17,6 @@ Where alpha is a value between 0 and 1. The closer to 1, the more weight the cur
 
 ### Roland Chorus florian-anwander
 https://www.florian-anwander.de/roland_string_choruses/
+
+https://github.com/DISTRHO/DPF/blob/develop/utils/png2rgba.py
+https://www.freepik.com/free-photo/texture-background_1167521.htm#query=metal&position=1&from_view=search&track=sph
