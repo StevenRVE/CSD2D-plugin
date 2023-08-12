@@ -15,8 +15,10 @@ result = (currentValue * alpha) + ( previousValue * (1-alpha))
 ```
 Where alpha is a value between 0 and 1. The closer to 1, the more weight the current value has. The closer to 0, the more weight the previous value has.
 
-### Roland Chorus florian-anwander
-https://www.florian-anwander.de/roland_string_choruses/
-
-https://github.com/DISTRHO/DPF/blob/develop/utils/png2rgba.py
-https://www.freepik.com/free-photo/texture-background_1167521.htm#query=metal&position=1&from_view=search&track=sph
+TODO:
+- improve interpolation
+- improve drive algorithm
+- improve GUI
+- add on/off button
+- add bypass button
+- add presets/programs
