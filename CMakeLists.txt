@@ -13,6 +13,9 @@ set(CMAKE_CXX_STANDARD 17)
        source/circularBuffer.cpp
        source/oscillator.cpp
        source/arctangentDistortion.cpp
+
+   FILES_UI
+       source/SvEArtworkChorus.cpp
  )
 
  target_include_directories(sve-chorus PUBLIC source)
