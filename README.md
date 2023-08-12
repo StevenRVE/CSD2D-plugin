@@ -18,6 +18,8 @@ If something is wrong with adding dpf, remove the submodule following the steps 
 
 <!-- TODO: Update this section with instructions for Marc/Ciska how to build and test plugin (trying to set up github actions for this -->
 
+Huge thanks to FalkTX for creating the DPF framework and for the example plugins and helping me out with some questions I had.
+
 ### Bibliography:
 - Hack Audio: An Introduction to Computer Programming and Digital Signal Processing in MATLAB, by Eric Tarr
 - Designing Audio Effect Plugins in C++, by Will Pirkle
