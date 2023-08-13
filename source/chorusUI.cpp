@@ -24,7 +24,7 @@ namespace Art = SvEArtworkChorus;
     knobPreGain->setId(Chorus::PARAM_PREGAIN);
     knobPreGain->setAbsolutePos(63, 113);
     knobPreGain->setRange(0.1f, 2.0f);
-    knobPreGain->setDefault(0.5f);
+    knobPreGain->setDefault(1.0f);
     knobPreGain->setRotationAngle(180);
     knobPreGain->setCallback(this);
 
@@ -32,7 +32,7 @@ namespace Art = SvEArtworkChorus;
     knobDrive = new ImageKnob(this, knobImage, ImageKnob::Vertical);
     knobDrive->setId(Chorus::PARAM_DRIVE);
     knobDrive->setAbsolutePos(163, 113);
-    knobDrive->setRange(0.1f, 10.0f);
+    knobDrive->setRange(0.1f, 15.0f);
     knobDrive->setDefault(0.5f);
     knobDrive->setRotationAngle(180);
     knobDrive->setCallback(this);
@@ -51,7 +51,7 @@ namespace Art = SvEArtworkChorus;
     knobRate->setId(Chorus::PARAM_RATE);
     knobRate->setAbsolutePos(113, 263);
     knobRate->setRange(0.1f, 20.0f);
-    knobRate->setDefault(1.0f);
+    knobRate->setDefault(2.0f);
     knobRate->setRotationAngle(180);
     knobRate->setCallback(this);
 

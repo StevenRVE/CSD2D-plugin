@@ -13,10 +13,10 @@ Chorus::Chorus()
       delayLine2(getSampleRate(), 0.1),
       delayLine3(getSampleRate(), 0.1),
       delayLine4(getSampleRate(), 0.1),
-      lfo1(getSampleRate(), 0.0f, 0.0f, Oscillator::Waveform::SINE),
-      lfo2(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
-      lfo3(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
-      lfo4(getSampleRate(), 0.0f, 0.0f,Oscillator::Waveform::SINE),
+      lfo1(getSampleRate(), 2.0f, 0.0f, Oscillator::Waveform::SINE),
+      lfo2(getSampleRate(), 2.0f, 0.0f,Oscillator::Waveform::SINE),
+      lfo3(getSampleRate(), 2.0f, 0.0f,Oscillator::Waveform::SINE),
+      lfo4(getSampleRate(), 2.0f, 0.0f,Oscillator::Waveform::SINE),
       testTone(getSampleRate(), 500.0f, 0.0f, 0.0f, Oscillator::Waveform::SINE),
       distortion(getSampleRate())
       {
@@ -67,16 +67,20 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
     {
         // PARAMS
         case PARAM_PREGAIN:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=2.0f, .def=0.5f, .name="Pre-Gain", .symbol="pregain" });
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=2.0f, .def=1.0f, .name="Pre-Gain", .symbol="pregain" });
             break;
         case PARAM_DRIVE:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=10.0f, .def=0.5f, .name="Drive", .symbol="drive" });
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=15.0f, .def=0.5f, .name="Drive", .symbol="drive" });
             break;
         case PARAM_DRYWET:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Dry/Wet", .symbol="drywet" });
             break;
         case PARAM_RATE:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=20.0f, .def=1.0f, .name="Rate", .symbol="rate" });
+            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=20.0f, .def=2.0f, .name="Rate", .symbol="rate" });
+            lfo1.setFrequency(rate);
+            lfo2.setFrequency(rate * 0.5f);
+            lfo3.setFrequency(rate * 0.25f);
+            lfo4.setFrequency(rate * 0.125f);
             break;
         case PARAM_DEPTH:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=1.0f, .name="Depth", .symbol="depth" });

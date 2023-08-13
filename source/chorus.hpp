@@ -135,8 +135,8 @@ private:
     // variables
     float preGain{1.0f};
     float drive{0.5f};
-    float dryWet{1.0f};
-    float rate{1.0f};
+    float dryWet{0.5f};
+    float rate{2.0f};
     float depth{1.0f};
 
     // objects
