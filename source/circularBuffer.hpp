@@ -6,6 +6,7 @@
 #define SVE_CHORUS_CIRCULARBUFFER_H
 
 #include <cstdint>
+#include <cmath>
 #include <iostream>
 
 class CircularBuffer {
