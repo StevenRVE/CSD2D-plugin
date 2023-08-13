@@ -188,20 +188,13 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
     // run
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
     {
-//        // write
-//        delayLine1.write(distortion.process(testTone.getSample()));
-//        delayLine2.write(distortion.process(testTone.getSample()));
-//        delayLine3.write(distortion.process(testTone.getSample()));
-//        delayLine4.write(distortion.process(testTone.getSample()));
-
-//        // write
+        // write
         delayLine1.write(distortion.process(input[currentFrame]));
         delayLine2.write(distortion.process(input[currentFrame]));
         delayLine3.write(distortion.process(input[currentFrame]));
         delayLine4.write(distortion.process(input[currentFrame]));
 
         // process
-
         delayLine1.setDistanceReadWriteHead(lfo1.getSample() + 1.0f);
         delayLine2.setDistanceReadWriteHead(lfo2.getSample() + 1.0f);
         delayLine3.setDistanceReadWriteHead(lfo3.getSample() + 1.0f);
