@@ -189,10 +189,10 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
     for (uint32_t currentFrame = 0; currentFrame < nframes; ++currentFrame)
     {
         // write
-        delayLine1.write(distortion.process(input[currentFrame]));
-        delayLine2.write(distortion.process(input[currentFrame]));
-        delayLine3.write(distortion.process(input[currentFrame]));
-        delayLine4.write(distortion.process(input[currentFrame]));
+        delayLine1.write(input[currentFrame]);
+        delayLine2.write(input[currentFrame]);
+        delayLine3.write(input[currentFrame]);
+        delayLine4.write(input[currentFrame]);
 
         // process
         delayLine1.setDistanceReadWriteHead(lfo1.getSample() + 1.0f);
@@ -201,10 +201,10 @@ void Chorus::run(const float** inputs, float** outputs, uint32_t nframes)
         delayLine4.setDistanceReadWriteHead(lfo4.getSample() + 1.0f);
 
         // output
-        output[currentFrame]  = 0.5f * ((1-dryWet) * distortion.process(input[currentFrame])
-                              + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * dryWet);
-        output2[currentFrame] = 0.5f * ((1-dryWet) * distortion.process(input[currentFrame])
-                              + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * dryWet);
+        output[currentFrame]  = distortion.process(0.5f * ((1-dryWet) * input[currentFrame]
+                              + (delayLine1.readWithInterpolation() + delayLine2.readWithInterpolation()) * dryWet));
+        output2[currentFrame] = distortion.process(0.5f * ((1-dryWet) * input[currentFrame]
+                              + (delayLine3.readWithInterpolation() + delayLine4.readWithInterpolation()) * dryWet));
 
         // tick
         lfo1.tick();
