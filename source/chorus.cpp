@@ -70,7 +70,7 @@ void Chorus::initParameter(uint32_t index, Parameter& parameter)
             setParamProps(parameter, { .automatable=true, .min=0.1f, .max=2.0f, .def=1.0f, .name="Pre-Gain", .symbol="pregain" });
             break;
         case PARAM_DRIVE:
-            setParamProps(parameter, { .automatable=true, .min=0.1f, .max=15.0f, .def=0.5f, .name="Drive", .symbol="drive" });
+            setParamProps(parameter, { .automatable=true, .min=1.0f, .max=30.0f, .def=0.5f, .name="Drive", .symbol="drive" });
             break;
         case PARAM_DRYWET:
             setParamProps(parameter, { .automatable=true, .min=0.0f, .max=1.0f, .def=0.5f, .name="Dry/Wet", .symbol="drywet" });
